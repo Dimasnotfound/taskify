@@ -1,30 +1,53 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:taskify/main.dart';
+import 'package:taskify/features/auth/presentation/pages/login_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Login Page Widget Test', () {
+    testWidgets('Check if Login Page displays correctly',
+        (WidgetTester tester) async {
+      // Build LoginPage widget
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: LoginPage(),
+        ),
+      );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Check if "Email" text field exists
+      expect(find.byType(TextField),
+          findsNWidgets(2)); // Two TextFields (email and password)
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Check if "Login" button exists
+      expect(find.text('Login'), findsOneWidget);
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    testWidgets('Enter email and password, then tap Login button',
+        (WidgetTester tester) async {
+      // Build LoginPage widget
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: LoginPage(),
+        ),
+      );
+
+      // Find TextFields and Button
+      final emailField = find.byType(TextField).at(0);
+      final passwordField = find.byType(TextField).at(1);
+      final loginButton = find.text('Login');
+
+      // Enter text into the email field
+      await tester.enterText(emailField, 'user1@example.com');
+      expect(find.text('user1@example.com'), findsOneWidget);
+
+      // Enter text into the password field
+      await tester.enterText(passwordField, 'password');
+      expect(find.text('password'), findsOneWidget);
+
+      // Tap the Login button
+      await tester.tap(loginButton);
+
+      // Trigger a frame
+      await tester.pump();
+    });
   });
 }
