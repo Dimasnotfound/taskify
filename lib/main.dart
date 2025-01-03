@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:taskify/features/auth/data/datasources/auth_remote_datasource.dart';
@@ -33,10 +34,10 @@ class MyApp extends StatelessWidget {
   final LoginUseCase loginUseCase;
 
   const MyApp({
-    Key? key,
+    super.key,
     required this.projectRepository,
     required this.loginUseCase,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +59,17 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: RouteNames.login,
-          onGenerateRoute: AppRoutes.generateRoute,
+        child: ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: RouteNames.splash,
+              onGenerateRoute: AppRoutes.generateRoute,
+            );
+          },
         ),
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskify/core/routes/route_names.dart';
 import '../bloc/auth_bloc.dart';
 
@@ -12,54 +14,109 @@ class LoginPage extends StatelessWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state) {
-                if (state is AuthSuccess) {
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.home,
-                    arguments: state.user.token,
-                  );
-                } else if (state is AuthFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is AuthLoading) {
-                  return const CircularProgressIndicator();
-                }
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo di atas
+              SvgPicture.asset(
+                'assets/logo.svg',
+                width: 100.w,
+                height: 100.h,
+              ),
+              SizedBox(height: 20.h),
 
-                return ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      LoginRequested(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      ),
+              Text(
+                'TASKIFY',
+                style: TextStyle(
+                  fontFamily: 'SoulGaze',
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'Manage your tasks effortlessly',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(height: 40.h),
+
+              TextField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'Enter your email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  prefixIcon: const Icon(Icons.email),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Enter your password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  prefixIcon: const Icon(Icons.lock),
+                ),
+              ),
+              SizedBox(height: 30.h),
+
+              BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthSuccess) {
+                    Navigator.pushNamed(
+                      context,
+                      RouteNames.home,
+                      arguments: state.user.token,
                     );
-                  },
-                  child: const Text('Login'),
-                );
-              },
-            ),
-          ],
+                  } else if (state is AuthFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AuthLoading) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  return ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<AuthBloc>(context).add(
+                        LoginRequested(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 50.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
