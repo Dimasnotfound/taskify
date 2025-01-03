@@ -5,11 +5,17 @@ class ApiClient {
   late Dio dio;
 
   ApiClient() {
+    final baseUrl = dotenv.env['BASE_URL'];
+
+    if (baseUrl == null) {
+      throw Exception("BASE_URL not found in .env");
+    }
+
     dio = Dio(
       BaseOptions(
-        baseUrl: dotenv.env['BASE_URL'] ?? '',
-        connectTimeout: Duration(milliseconds: 5000),
-        receiveTimeout: Duration(milliseconds: 3000),
+        baseUrl: baseUrl, // Base URL diatur di sini
+        connectTimeout: Duration(milliseconds: 60000),
+        receiveTimeout: Duration(milliseconds: 60000),
       ),
     );
   }
