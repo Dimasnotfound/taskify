@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final result = await loginUseCase(event.email, event.password);
 
       result.fold(
-        (failure) => emit(AuthFailure('Invalid email bitch')),
+        (failure) => emit(AuthFailure('Invalid email or password')),
         (user) => emit(AuthSuccess(user)),
       );
     });
