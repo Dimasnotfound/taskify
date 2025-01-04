@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage>
                             context, 'Login success');
                         Navigator.pushNamed(
                           context,
-                          RouteNames.home,
+                          RouteNames.dashboard,
                           arguments: state.user.token,
                         );
                       } else if (state is AuthFailure) {

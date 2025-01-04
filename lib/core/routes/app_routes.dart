@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskify/features/auth/presentation/pages/login_page.dart';
 import 'package:taskify/features/auth/presentation/pages/splash_page.dart';
 import 'package:taskify/features/home/presentation/bloc/project_bloc.dart';
-import 'package:taskify/features/home/presentation/pages/home_page.dart';
+import 'package:taskify/features/home/presentation/pages/dashboard_page.dart';
 import '../routes/route_names.dart';
 
 class AppRoutes {
@@ -17,14 +17,14 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
         );
-      case RouteNames.home:
+      case RouteNames.dashboard:
         final token = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => ProjectBloc(
               RepositoryProvider.of(context),
             ),
-            child: HomePage(token: token),
+            child: DashboardPage(token: token),
           ),
         );
       default:
