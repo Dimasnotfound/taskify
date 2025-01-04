@@ -18,14 +18,12 @@ class _SplashPageState extends State<SplashPage>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
-    _controller.forward();
-
-    Future.delayed(const Duration(seconds: 4), () {
+    _controller.forward().then((_) {
       _controller.reverse().then((_) {
         Navigator.pushReplacementNamed(context, '/login');
       });
