@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:taskify/core/routes/route_names.dart';
 import 'package:taskify/core/utils/top_snackbar_utils.dart';
 import '../bloc/auth_bloc.dart';
+import '../../../navigation/main_navigation_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -113,10 +113,12 @@ class _LoginPageState extends State<LoginPage>
                       if (state is AuthSuccess) {
                         TopSnackbarUtils.showSuccessMessage(
                             context, 'Login success');
-                        Navigator.pushNamed(
+                        Navigator.pushReplacement(
                           context,
-                          RouteNames.dashboard,
-                          arguments: state.user.token,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                MainNavigationPage(token: state.user.token),
+                          ),
                         );
                       } else if (state is AuthFailure) {
                         TopSnackbarUtils.showErrorMessage(
