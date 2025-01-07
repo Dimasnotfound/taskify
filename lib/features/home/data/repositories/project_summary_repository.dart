@@ -6,23 +6,26 @@ class ProjectSummaryRepository {
 
   ProjectSummaryRepository(this.client);
 
-  Future<ProjectSummaryModel> fetchProjectSummary() async {
+  Future<ProjectSummaryModel> fetchProjectSummary(String token) async {
     try {
-      final response = await client.get('/project-summary');
+      final response = await client.get(
+        '/project-summary',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+        ),
+      );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         return ProjectSummaryModel.fromJson(response.data);
       } else {
-        throw Exception('Failed to fetch project summary');
+        throw Exception(
+            'Failed to fetch project summary with status code ${response.statusCode}');
       }
-    } on DioError catch (e) {
-      if (e.response != null) {
-        final statusCode = e.response?.statusCode ?? 0;
-        final errorMessage = e.response?.data['message'] ?? 'Unknown error';
-        throw Exception('Error $statusCode: $errorMessage');
-      } else {
-        throw Exception('Failed to fetch project summary: ${e.message}');
-      }
+    } on DioException catch (dioError) {
+      throw Exception('DioException: ${dioError.message}');
     } catch (e) {
       throw Exception('Failed to fetch project summary: $e');
     }
