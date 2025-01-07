@@ -33,6 +33,7 @@ class DashboardPage extends StatelessWidget {
               );
             } else if (state is ProjectSummaryLoaded) {
               final summary = state.projectSummary;
+              print('DEBUG: Summary in UI: $summary');
 
               return Padding(
                 padding: const EdgeInsets.all(16.0),
