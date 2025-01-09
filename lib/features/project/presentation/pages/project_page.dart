@@ -6,7 +6,7 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Task")),
+      appBar: AppBar(title: const Text("Project")),
       body: const Center(
         child: Text("Project Page"),
       ),
