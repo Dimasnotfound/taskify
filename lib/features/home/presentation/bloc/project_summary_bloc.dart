@@ -14,7 +14,7 @@ class ProjectSummaryBloc
     on<FetchProjectSummary>((event, emit) async {
       emit(ProjectSummaryLoading());
       try {
-        final summary = await repository.fetchProjectSummary(event.token);
+        final summary = await repository.fetchProjectSummary();
         emit(ProjectSummaryLoaded(summary));
       } catch (e) {
         emit(ProjectSummaryError(e.toString()));

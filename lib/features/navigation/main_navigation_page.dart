@@ -7,9 +7,7 @@ import '../project/presentation/pages/project_page.dart';
 import '../task/presentation/pages/task_page.dart';
 
 class MainNavigationPage extends StatelessWidget {
-  final String token;
-
-  const MainNavigationPage({super.key, required this.token});
+  const MainNavigationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,7 @@ class MainNavigationPage extends StatelessWidget {
 
     List<Widget> _buildScreens() {
       return [
-        DashboardPage(token: token),
+        DashboardPage(),
         TaskPage(),
         ProjectPage(),
         ProfilePage(),

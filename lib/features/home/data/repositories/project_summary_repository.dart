@@ -6,17 +6,9 @@ class ProjectSummaryRepository {
 
   ProjectSummaryRepository(this.client);
 
-  Future<ProjectSummaryModel> fetchProjectSummary(String token) async {
+  Future<ProjectSummaryModel> fetchProjectSummary() async {
     try {
-      final response = await client.get(
-        '/project-summary',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-          },
-        ),
-      );
+      final response = await client.get('/project-summary');
 
       if (response.statusCode == 200 && response.data != null) {
         return ProjectSummaryModel.fromJson(response.data);

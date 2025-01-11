@@ -18,13 +18,12 @@ class AppRoutes {
           builder: (_) => const LoginPage(),
         );
       case RouteNames.dashboard:
-        final token = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => ProjectSummaryBloc(
               RepositoryProvider.of(context),
             ),
-            child: DashboardPage(token: token),
+            child: DashboardPage(),
           ),
         );
       default:

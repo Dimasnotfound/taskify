@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiClient {
   late Dio dio;
+  String? token;
 
   ApiClient() {
     final baseUrl = dotenv.env['BASE_URL'];
@@ -13,11 +14,30 @@ class ApiClient {
 
     dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl, // Base URL diatur di sini
+        baseUrl: baseUrl,
         connectTimeout: Duration(milliseconds: 60000),
         receiveTimeout: Duration(milliseconds: 60000),
       ),
     );
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          options.headers['Accept'] = 'application/json';
+          return handler.next(options);
+        },
+        onError: (error, handler) {
+          return handler.next(error);
+        },
+      ),
+    );
+  }
+
+  void setToken(String authToken) {
+    token = authToken;
   }
 
   Dio getClient() => dio;
