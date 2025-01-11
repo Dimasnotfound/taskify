@@ -8,10 +8,5 @@ abstract class ProjectSummaryEvent extends Equatable {
 }
 
 class FetchProjectSummary extends ProjectSummaryEvent {
-  final String token;
-
-  const FetchProjectSummary(this.token);
-
-  @override
-  List<Object?> get props => [token];
+  const FetchProjectSummary();
 }

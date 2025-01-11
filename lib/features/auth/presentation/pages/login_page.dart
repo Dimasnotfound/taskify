@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:taskify/core/network/api_client.dart';
 import 'package:taskify/core/utils/top_snackbar_utils.dart';
 import '../bloc/auth_bloc.dart';
 import '../../../navigation/main_navigation_page.dart';
@@ -113,11 +114,12 @@ class _LoginPageState extends State<LoginPage>
                       if (state is AuthSuccess) {
                         TopSnackbarUtils.showSuccessMessage(
                             context, 'Login success');
+                        final apiClient = ApiClient();
+                        apiClient.setToken(state.user.token);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                MainNavigationPage(token: state.user.token),
+                            builder: (_) => MainNavigationPage(),
                           ),
                         );
                       } else if (state is AuthFailure) {

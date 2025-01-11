@@ -4,16 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../bloc/project_summary_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
-  final String token;
-
-  const DashboardPage({super.key, required this.token});
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProjectSummaryBloc(
         RepositoryProvider.of(context),
-      )..add(FetchProjectSummary(token)),
+      )..add(FetchProjectSummary()),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
