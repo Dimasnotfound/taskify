@@ -1,10 +1,66 @@
 import 'package:flutter/material.dart';
 
-class TaskPage extends StatelessWidget {
+class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
 
   @override
+  State<TaskPage> createState() => _TaskPageState();
+}
+
+class _TaskPageState extends State<TaskPage> {
+  int selectedFilterIndex = 0;
+
+  final List<Map<String, dynamic>> filters = [
+    {'label': 'Ready', 'count': 10},
+    {'label': 'In Progress', 'count': 8},
+    {'label': 'On Hold', 'count': 5},
+    {'label': 'In Review', 'count': 3},
+    {'label': 'Completed', 'count': 65},
+  ];
+
+  final List<Map<String, dynamic>> tasks = [
+    {
+      'title': 'Dashboard design for admin',
+      'priority': 'High',
+      'status': 'Ready',
+      'color': Colors.blue,
+      'date': '14 Oct 2022',
+      'comments': 5,
+      'attachments': 5,
+    },
+    {
+      'title': 'Konom web application',
+      'priority': 'Low',
+      'status': 'In Progress',
+      'color': Colors.deepOrange,
+      'date': '14 Nov 2022',
+      'comments': 2,
+      'attachments': 4,
+    },
+    {
+      'title': 'Research and development',
+      'priority': 'Medium',
+      'status': 'On Hold',
+      'color': Colors.red,
+      'date': '14 Oct 2022',
+      'comments': 6,
+      'attachments': 2,
+    },
+    {
+      'title': 'Event booking application',
+      'priority': 'Medium',
+      'status': 'In Review',
+      'color': Colors.purple,
+      'date': '14 Oct 2022',
+      'comments': 6,
+      'attachments': 3,
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    final selectedFilter = filters[selectedFilterIndex]['label'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Task List"),
@@ -20,56 +76,45 @@ class TaskPage extends StatelessWidget {
         child: Column(
           children: [
             // Filter buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FilterButton(label: "Complete", count: 65, isSelected: true),
-                FilterButton(label: "To Do", count: 45),
-                FilterButton(label: "In Review", count: 3),
-              ],
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filters.length,
+                itemBuilder: (context, index) {
+                  final filter = filters[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: FilterButton(
+                      label: filter['label'],
+                      count: filter['count'],
+                      isSelected: selectedFilterIndex == index,
+                      onTap: () {
+                        setState(() {
+                          selectedFilterIndex = index;
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 16),
             // Task list
             Expanded(
               child: ListView(
-                children: const [
-                  TaskCard(
-                    title: "Dashboard design for admin",
-                    priority: "High",
-                    status: "On Track",
-                    color: Colors.pink,
-                    date: "14 Oct 2022",
-                    comments: 5,
-                    attachments: 5,
-                  ),
-                  TaskCard(
-                    title: "Konom web application",
-                    priority: "Low",
-                    status: "Meeting",
-                    color: Colors.lightGreen,
-                    date: "14 Nov 2022",
-                    comments: 2,
-                    attachments: 4,
-                  ),
-                  TaskCard(
-                    title: "Research and development",
-                    priority: "Medium",
-                    status: "At Risk",
-                    color: Colors.green,
-                    date: "14 Oct 2022",
-                    comments: 6,
-                    attachments: 2,
-                  ),
-                  TaskCard(
-                    title: "Event booking application",
-                    priority: "Medium",
-                    status: "Meeting",
-                    color: Colors.orange,
-                    date: "14 Oct 2022",
-                    comments: 6,
-                    attachments: 3,
-                  ),
-                ],
+                children: tasks
+                    .where((task) => task['status'] == selectedFilter)
+                    .map((task) => TaskCard(
+                          title: task['title'],
+                          priority: task['priority'],
+                          status: task['status'],
+                          color: task['color'],
+                          date: task['date'],
+                          comments: task['comments'],
+                          attachments: task['attachments'],
+                        ))
+                    .toList(),
               ),
             ),
           ],
@@ -87,18 +132,20 @@ class FilterButton extends StatelessWidget {
   final String label;
   final int count;
   final bool isSelected;
+  final VoidCallback onTap;
 
   const FilterButton({
     super.key,
     required this.label,
     required this.count,
     this.isSelected = false,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
