@@ -114,7 +114,8 @@ class _LoginPageState extends State<LoginPage>
                       if (state is AuthSuccess) {
                         TopSnackbarUtils.showSuccessMessage(
                             context, 'Login success');
-                        final apiClient = ApiClient();
+                        final apiClient =
+                            RepositoryProvider.of<ApiClient>(context);
                         apiClient.setToken(state.user.token);
                         Navigator.pushReplacement(
                           context,

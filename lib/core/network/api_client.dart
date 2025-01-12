@@ -17,6 +17,10 @@ class ApiClient {
         baseUrl: baseUrl,
         connectTimeout: Duration(milliseconds: 60000),
         receiveTimeout: Duration(milliseconds: 60000),
+        headers: {
+          'Authorization': token != null ? 'Bearer $token' : '',
+          'Accept': 'application/json',
+        },
       ),
     );
 
@@ -38,6 +42,7 @@ class ApiClient {
 
   void setToken(String authToken) {
     token = authToken;
+    dio.options.headers['Authorization'] = 'Bearer $authToken';
   }
 
   Dio getClient() => dio;
