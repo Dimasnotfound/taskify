@@ -25,7 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: RepositoryProviders.getAllProviders(apiClient),
+      providers: [
+        RepositoryProvider<ApiClient>.value(value: apiClient),
+        ...RepositoryProviders.getAllProviders(apiClient),
+      ],
       child: MultiBlocProvider(
         providers: BlocProviders.getAllProviders(),
         child: ScreenUtilInit(
