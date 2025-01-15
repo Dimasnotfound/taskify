@@ -30,7 +30,7 @@ class ProjectPage extends StatelessWidget {
             Text(
               "Your Projects",
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -39,8 +39,7 @@ class ProjectPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 5, // Replace with actual number of projects
                 itemBuilder: (context, index) {
-                  return _buildProjectCard(
-                    context,
+                  return ProjectCard(
                     title: "Project ${index + 1}",
                     description: "Description for project ${index + 1}",
                     progress: (index + 1) * 20.0, // Dynamic progress
@@ -59,17 +58,26 @@ class ProjectPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildProjectCard(
-    BuildContext context, {
-    required String title,
-    required String description,
-    required double progress,
-  }) {
+class ProjectCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final double progress;
+
+  const ProjectCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.progress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
